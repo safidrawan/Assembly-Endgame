@@ -1,0 +1,106 @@
+:root {
+  --small-radius: 3px;
+  --mid-radius: 6px;
+  --big-radius: 12px;
+}
+.game-status {
+  padding: 20px;
+  margin: 1rem 0;
+  border-radius: var(--mid-radius);
+}
+.game-status.won{
+  background-color: forestgreen;
+
+}
+
+.game-status.lost{
+  background-color: red;
+}
+.game-status.farewell{
+  background-color: #008ddf;
+
+}
+.language-chips {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  padding: 1rem;
+  justify-content: center;
+}
+
+.language {
+  padding: 5px;
+  border-radius: var(--mid-radius);
+  position: relative;
+}
+.language-chips .lost::before {
+  content: "💀";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.541);
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+h1 {
+  margin-bottom: 15px;
+}
+.word {
+  display: flex;
+  justify-content: center;
+}
+.word span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #393939;
+  padding: 10px;
+  margin: 2px;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #f9f4da;
+  border-radius: var(--mid-radius);
+  width: 30px;
+  height: 40px;
+}
+section.keyboard {
+  /* background-color: #f9f4da; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 6px;
+}
+
+section.keyboard > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d5bf5a;
+  width: 30px;
+  height: 30px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #393939;
+  border-radius: var(--mid-radius);
+  cursor: pointer;
+  border: 1px solid #d7d7d7;
+}
+
+section.keyboard > button.correct {
+  background-color: #10a95b;
+}
+section.keyboard > button.wrong {
+  background-color: #ec5d49;
+}
+button.newgame {
+  width: 200px;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #62d2e9;
+  border-radius: var(--mid-radius);
+  font-size: 1.2rem;
+}
