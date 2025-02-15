@@ -17,7 +17,9 @@
   background-color: red;
 }
 .game-status.farewell{
-  background-color: #008ddf;
+  background-color: #7a5ea7;
+  font-style: italic;
+  border: 1px dashed #323232;
 
 }
 .language-chips {
