@@ -77,6 +77,7 @@ export default function App() {
         className={className}
         onClick={() => handleKeyboardClick(letter)}
         key={index}
+        disabled={isGameOver}
       >
         {letter.toUpperCase()}
       </button>
