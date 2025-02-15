@@ -98,6 +98,11 @@ section.keyboard > button.correct {
 section.keyboard > button.wrong {
   background-color: #ec5d49;
 }
+
+section.keyboard > button:disabled{
+  cursor: not-allowed;
+  opacity: 0.5;;
+}
 button.newgame {
   width: 200px;
   margin-top: 20px;
