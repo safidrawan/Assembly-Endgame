@@ -37,7 +37,7 @@ export default function App() {
 
   function newGame() {
     setUserGuesses(new Set());
-    setCurrentWord(getRandomWord);
+    setCurrentWord(getRandomWord());
   }
   function handleKeyboardClick(letter) {
     setUserGuesses((prev) => new Set([...prev, letter]));
