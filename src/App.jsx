@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { clsx } from "clsx";
+import Confetti from "react-confetti";
 
 import "./App.css";
 import { languages } from "./languages";
@@ -79,15 +80,15 @@ export default function App() {
   });
 
   const wordElement = currentWord.split("").map((letter, index) => {
-    const reveal = isGameLost && !userGuesses.has(letter)
-    const classes = clsx("word-letters", {reveal:reveal})
+    const reveal = isGameLost && !userGuesses.has(letter);
+    const classes = clsx("word-letters", { reveal: reveal });
 
     return (
-    <span className={classes} key={index}>
-      {userGuesses.has(letter) || reveal ? letter.toUpperCase() : ""}
-    </span>
-    )
-});
+      <span className={classes} key={index}>
+        {userGuesses.has(letter) || reveal ? letter.toUpperCase() : ""}
+      </span>
+    );
+  });
 
   function getMessage() {
     if (isGameWon) return { title: "You Won!", message: "Well Done! 🎉" };
@@ -102,6 +103,7 @@ export default function App() {
   const { title, message } = getMessage();
   return (
     <main>
+      {isGameWon ? <Confetti width={window.innerWidth} numberOfPieces={200}/> : ""}
       <header>
         <h1>Assembly: Endgame</h1>
         <p>
