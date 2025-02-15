@@ -23,7 +23,7 @@ export default function App() {
 
   const isGameOver = isGameWon || isGameLost;
 
-  const lastGuessedLetter = [...userGuesses][userGuesses.size-1];
+  const lastGuessedLetter = [...userGuesses][userGuesses.size - 1];
   const isLastGuessWrong =
     lastGuessedLetter && !currentWord.includes(lastGuessedLetter);
 
@@ -33,7 +33,6 @@ export default function App() {
     return languages[
       Math.floor(Math.random() * languages.length)
     ].name.toLowerCase();
-    auto;
   }
 
   function updateUserGuesses(letter) {
@@ -83,7 +82,8 @@ export default function App() {
       >
         {letter.toUpperCase()}
       </button>
-    );``
+    );
+    ``;
   });
 
   const wordElement = currentWord.split("").map((letter, index) => (
@@ -114,13 +114,36 @@ export default function App() {
         </p>
       </header>
       <section
-        className={clsx("game-status", { won: isGameWon, lost: isGameLost , farewell:!isGameOver && isLastGuessWrong})}
+        aria-live="polite"
+        role="status"
+        aria-label={`Current word: ${currentWord
+          .split("")
+          .map((letter) => (userGuesses.has(letter) ? letter + "." : "blank"))
+          .join(" ")}`}
+        className={clsx("game-status", {
+          won: isGameWon,
+          lost: isGameLost,
+          farewell: !isGameOver && isLastGuessWrong,
+        })}
       >
         <h2>{title}</h2>
         <p>{message}</p>
       </section>
       <section className="language-chips">{languageElements}</section>
-      <section className="word">{wordElement}</section>
+      <section className="word">
+        {wordElement}
+        <p
+          className="sr-only"
+          aria-live="polite"
+         
+        >
+          {lastGuessedLetter && (currentWord.includes(lastGuessedLetter)? 
+          `Correct! the letter ${lastGuessedLetter} is in the word.` :
+          `Sorry! the letter ${lastGuessedLetter} is not in the word.`)
+          }
+          You have ${MAX_WRONG_GUESSES - wrongGuessesCount} attempts left.
+        </p>
+      </section>
       <section className="keyboard">{keyboard}</section>
       {isGameOver ? (
         <button onClick={newGame} className="newgame">
