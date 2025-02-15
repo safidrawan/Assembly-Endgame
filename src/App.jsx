@@ -4,9 +4,10 @@ import { clsx } from "clsx";
 import "./App.css";
 import { languages } from "./languages";
 import { getFarewellText } from "./Farewell";
+import { wordsArray } from "./Words";
 
 export default function App() {
-  const [currentWord, setCurrentWord] = useState(getRandomLang);
+  const [currentWord, setCurrentWord] = useState(() => getRandomWord());
   const [userGuesses, setUserGuesses] = useState(new Set());
 
   const wrongGuessesCount = [...userGuesses].filter(
@@ -15,7 +16,7 @@ export default function App() {
 
   const isGameWon = currentWord
     .split("")
-    .every((letter) => [...userGuesses].includes(letter));
+    .every((letter) => userGuesses.has(letter));
 
   const MAX_WRONG_GUESSES = languages.length - 1;
 
@@ -29,25 +30,16 @@ export default function App() {
 
   const alphabet = "abcdefghijklmnopqrstuvwxyz.";
 
-  function getRandomLang() {
-    return languages[
-      Math.floor(Math.random() * languages.length)
-    ].name.toLowerCase();
+  function getRandomWord() {
+    return wordsArray[Math.floor(Math.random() * wordsArray.length)];
   }
 
-  function updateUserGuesses(letter) {
-    setUserGuesses((prev) => new Set([...prev, letter]));
-  }
   function newGame() {
     setUserGuesses(new Set());
-    setCurrentWord(() => {
-      return languages[
-        Math.floor(Math.random() * languages.length)
-      ].name.toLowerCase();
-    });
+    setCurrentWord(getRandomWord);
   }
   function handleKeyboardClick(letter) {
-    updateUserGuesses(letter);
+    setUserGuesses((prev) => new Set([...prev, letter]));
   }
   const languageElements = languages.map((obj, index) => {
     const isLangLost = index < wrongGuessesCount;
@@ -63,7 +55,7 @@ export default function App() {
   });
 
   const keyboard = alphabet.split("").map((letter, index) => {
-    const isGuessed = [...userGuesses].includes(letter);
+    const isGuessed = userGuesses.has(letter);
     const isCorrect = currentWord.includes(letter) && isGuessed;
     const isWrong = isGuessed && !isCorrect;
     const className = clsx({
@@ -86,11 +78,16 @@ export default function App() {
     ``;
   });
 
-  const wordElement = currentWord.split("").map((letter, index) => (
-    <span className="word-letters" key={index}>
-      {[...userGuesses].includes(letter) ? letter.toUpperCase() : ""}
+  const wordElement = currentWord.split("").map((letter, index) => {
+    const reveal = isGameLost && !userGuesses.has(letter)
+    const classes = clsx("word-letters", {reveal:reveal})
+
+    return (
+    <span className={classes} key={index}>
+      {userGuesses.has(letter) || reveal ? letter.toUpperCase() : ""}
     </span>
-  ));
+    )
+});
 
   function getMessage() {
     if (isGameWon) return { title: "You Won!", message: "Well Done! 🎉" };
@@ -103,7 +100,6 @@ export default function App() {
     return { title: "Game", message: "in progress" };
   }
   const { title, message } = getMessage();
-
   return (
     <main>
       <header>
@@ -131,22 +127,20 @@ export default function App() {
       </section>
       <section className="language-chips">{languageElements}</section>
       <section className="word">
-        {wordElement}
-        <p
-          className="sr-only"
-          aria-live="polite"
-         
-        >
-          {lastGuessedLetter && (currentWord.includes(lastGuessedLetter)? 
-          `Correct! the letter ${lastGuessedLetter} is in the word.` :
-          `Sorry! the letter ${lastGuessedLetter} is not in the word.`)
-          }
+        <div className="word-spans">{wordElement}</div>
+        <p className="sr-only" aria-live="polite">
+          {lastGuessedLetter &&
+            (currentWord.includes(lastGuessedLetter)
+              ? `Correct! the letter ${lastGuessedLetter} is in the word.`
+              : `Sorry! the letter ${lastGuessedLetter} is not in the word.`)}
           You have ${MAX_WRONG_GUESSES - wrongGuessesCount} attempts left.
         </p>
+        <h2> Remaining Chances: {MAX_WRONG_GUESSES - wrongGuessesCount}</h2>
       </section>
+
       <section className="keyboard">{keyboard}</section>
       {isGameOver ? (
-        <button onClick={newGame} className="newgame">
+        <button onClick={newGame} className="new-game">
           New Game
         </button>
       ) : (
