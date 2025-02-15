@@ -77,11 +77,13 @@ export default function App() {
         className={className}
         onClick={() => handleKeyboardClick(letter)}
         key={index}
-        disabled={isGameOver}
+        disabled={isGameOver || userGuesses.has(letter)}
+        aria-disabled={userGuesses.has(letter) || isGameOver}
+        aria-label={`Letter ${letter}`}
       >
         {letter.toUpperCase()}
       </button>
-    );
+    );``
   });
 
   const wordElement = currentWord.split("").map((letter, index) => (
