@@ -6,7 +6,7 @@ import { languages } from "./languages";
 import { getFarewellText } from "./Farewell";
 
 export default function App() {
-  const [currentWord, setCurrentWord] = useState(getRandomNum);
+  const [currentWord, setCurrentWord] = useState(getRandomLang);
   const [userGuesses, setUserGuesses] = useState(new Set());
 
   const wrongGuessesCount = [...userGuesses].filter(
@@ -29,7 +29,7 @@ export default function App() {
 
   const alphabet = "abcdefghijklmnopqrstuvwxyz.";
 
-  function getRandomNum() {
+  function getRandomLang() {
     return languages[
       Math.floor(Math.random() * languages.length)
     ].name.toLowerCase();
@@ -112,7 +112,7 @@ export default function App() {
         </p>
       </header>
       <section
-        className={clsx("game-status", { won: isGameWon, lost: isGameLost })}
+        className={clsx("game-status", { won: isGameWon, lost: isGameLost , farewell:isLastGuessWrong})}
       >
         <h2>{title}</h2>
         <p>{message}</p>
